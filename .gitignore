@@ -10,9 +10,7 @@ reports/
 .auth/
 
 # Tool & CI config
-.github/
-.claude/
-CLAUDE.md
+
 
 # Secrets & credentials
 awsSecrets.json

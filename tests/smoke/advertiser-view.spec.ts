@@ -7,7 +7,7 @@ test.describe('Advertiser profile', () => {
   test.use({ storageState: '.auth/advertiser.json' });
 
   test('Advertiser is able to edit company details', async ({ profilePage }) => {
-    const employeeOptions = ['Solo trader', '1 - 4 employees', '5 - 19 employees', '20 - 199 employees'];
+    const employeeOptions = ['Sole trader', '1 - 4 employees', '5 - 19 employees', '20 - 199 employees'];
     const newCompanyName = faker.company.name();
     const newEmployeeCount = faker.helpers.arrayElement(employeeOptions);
 
@@ -64,8 +64,9 @@ test.describe('Advertiser profile', () => {
 
     await profilePage.verifyAccountDetails(profilePage, updatedDetails);
   });
+});
 
-  test.describe('Reset password', () => {
+test.describe('Reset password', () => {
     test.use({ storageState: '.auth/advertiser2.json' });
 
     const tempPassword = 'Password123@';
@@ -137,4 +138,3 @@ test.describe('Advertiser profile', () => {
       await expect(res.status()).toBe(200);
     });
   });
-});
