@@ -10,7 +10,7 @@ export default (async () => {
     fullyParallel: true,
     forbidOnly: !!process.env.CI,
     retries: process.env.CI ? 2 : 0,
-    workers: process.env.CI ? 4 : undefined,
+    workers: process.env.CI ? 4 : 3,
     timeout: 30_000,
 
     expect: {
@@ -21,7 +21,6 @@ export default (async () => {
       ['list'],
       ['html'],
       ['junit', { outputFile: 'reports/junit/results.xml' }],
-      ...(process.env.CI ? [['github'] as const] : []),
     ],
 
     use: {
