@@ -1,6 +1,7 @@
 import { test, expect } from '@fixtures/index';
 import { faker } from '@faker-js/faker';
 import { AwsSecrets, getLocalSecretsIfExists } from '@helpers/getAwsParameters';
+import { getAuthHeadersFromState } from '@helpers/api.helper';
 let secrets: AwsSecrets;
 
 test.describe('Advertiser profile', () => {
@@ -63,6 +64,34 @@ test.describe('Advertiser profile', () => {
     await profilePage.saveAccountDetailsButton.click();
 
     await profilePage.verifyAccountDetails(profilePage, updatedDetails);
+  });
+
+  test('Advertiser is able to add a card', async ({ profilePage }) => {
+    const cardNumber = '4242424242424242';
+    const expiryDate = '1234';
+    const expDate = '12 / 34';
+    const cvcCode = '123';
+    const cardHolderName = faker.person.fullName();
+
+    await profilePage.navigateTo('/');
+    await profilePage.profileDropdown.click();
+    await profilePage.profileButton.click();
+    await profilePage.paymentTab.click();
+    await profilePage.addCardButton.click();
+
+    await profilePage.cardNumberInput.fill(cardNumber);
+    await profilePage.expiryDateInput.pressSequentially(expiryDate, { delay: 100 });
+    await profilePage.CVCinput.fill(cvcCode);
+    await profilePage.cardHolderNameInput.fill(cardHolderName);
+
+    await profilePage.saveCardModalButton.click();
+    await profilePage.verifyCardAddedMessage();
+    
+    await profilePage.verifyCardLastFourDigits(cardNumber.slice(-4));
+    await profilePage.verifyCardExpiryDate(cardNumber.slice(-4), expDate);
+
+    await profilePage.deleteCard(cardNumber.slice(-4));
+    await profilePage.verifyCardRemovedMessage();
   });
 });
 

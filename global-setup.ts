@@ -43,25 +43,25 @@ export default async function globalSetup(config: FullConfig) {
     },
   ];
 
-  const browser = await chromium.launch({ headless: false });
+  // const browser = await chromium.launch({ headless: false });
 
-  await Promise.all(
-    users.map(async (user) => {
-      console.log(`Authenticating as ${user.role}...`);
-      const context = await browser.newContext();
-      const page = await context.newPage();
+  // await Promise.all(
+  //   users.map(async (user) => {
+  //     console.log(`Authenticating as ${user.role}...`);
+  //     const context = await browser.newContext();
+  //     const page = await context.newPage();
 
-      await authenticateInCognito(page, cognito.login, cognito.password, secrets.BASE_URL);
-      await authenticateInCore(page, user.email, user.password, `${secrets.BASE_URL}/login`);
+  //     await authenticateInCognito(page, cognito.login, cognito.password, secrets.BASE_URL);
+  //     await authenticateInCore(page, user.email, user.password, `${secrets.BASE_URL}/login`);
 
-      fs.mkdirSync(path.dirname(user.file), { recursive: true });
-      await context.storageState({ path: user.file });
-      await context.clearCookies();
-      await context.close();
+  //     fs.mkdirSync(path.dirname(user.file), { recursive: true });
+  //     await context.storageState({ path: user.file });
+  //     await context.clearCookies();
+  //     await context.close();
 
-      console.log(`Session saved: ${user.file}`);
-    })
-  );
+  //     console.log(`Session saved: ${user.file}`);
+  //   })
+  // );
 
-  await browser.close();
+  // await browser.close();
 }
